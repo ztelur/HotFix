@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 
-
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
@@ -25,12 +24,8 @@ android {
             minifyEnabled false
         }
     }
-    productFlavors {
-        qihoo {
-        }
-    }
-}
 
+}
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')

@@ -1,21 +1,18 @@
 package dodola.patch
 
+import javassist.ClassClassPath
 import javassist.ClassPool
 import javassist.CtClass
-import org.apache.commons.codec.digest.DigestUtils
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import sun.misc.IOUtils
 
 import java.lang.annotation.Annotation
 import java.lang.reflect.Method
 import java.util.jar.JarEntry
 import java.util.jar.JarFile
-import java.util.jar.JarOutputStream
-import java.util.zip.ZipEntry
 
 public class HotFixPlugin implements Plugin<Project> {
-    private static final String PATCH = "Patch"
+    private static final String PATCH = "PATCH"
     private HashSet<String> includePackage
     private HashSet<String> excludeClass
     private ClassPool mClassPool;
@@ -44,13 +41,15 @@ public class HotFixPlugin implements Plugin<Project> {
     }
     @Override
     void apply(Project project) {
-
+        println("apply the project")
         project.extensions.create("hotfix", HotFixExtension, project)
 //        readHotFixExtension()
         project.afterEvaluate {
             initClassPool()
             project.android.applicationVariants.each { variant ->
-                if (variant.name.contains(PATCH)) {
+                println("meet when ${variant.name}")
+                String upperName = variant.name.capitalize()
+                if (upperName.toUpperCase().contains(PATCH)) {
                     println("process when ${variant.name.capitalize()}")
 
                     outputPath = "${project.buildDir}/outputs/patch"
@@ -140,7 +139,9 @@ public class HotFixPlugin implements Plugin<Project> {
                     InputStream inputStream = file.getInputStream(jarEntry);
                     try {
                         CtClass ctClass = mClassPool.makeClass(inputStream)
-
+                        //获得jar中的类路径
+                        mClassPool.insertClassPath(new ClassClassPath(ctClass.getClass()));
+                        println("process success")
                     } catch (EOFException e) {
 //                    e.printStackTrace()
                         println("process failed")
