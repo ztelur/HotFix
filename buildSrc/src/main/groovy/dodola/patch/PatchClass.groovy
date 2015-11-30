@@ -2,10 +2,7 @@ package dodola.patch;
 
 import javassist.ClassPool
 import javassist.CtClass
-import javassist.CtConstructor
-import javassist.CtMethod
-import javassist.CtNewConstructor
-import javassist.CtNewMethod
+
 
 public class PatchClass {
     /**
@@ -14,7 +11,6 @@ public class PatchClass {
      * @param lib 这个是hackdex的目录,就是AntilazyLoad类的class文件所在地
      */
     public static void process(String buildDir, String lib) {
-
         println(lib)
         ClassPool classes = ClassPool.getDefault()
         classes.appendClassPath(buildDir)

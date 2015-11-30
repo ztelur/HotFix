@@ -1,11 +1,5 @@
 apply plugin: 'com.android.application'
 
-task('processWithJavassist') << {
-    String classPath = file('build/intermediates/classes/debug')//项目编译class所在目录
-    dodola.patch.PatchClass.process(classPath, project(':hackdex').buildDir
-            .absolutePath + '/intermediates/classes/debug')//第二个参数是hackdex的class所在目录
-
-}
 
 android {
     compileSdkVersion 23
@@ -27,12 +21,15 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        patch {
+            minifyEnabled false
+        }
     }
-    applicationVariants.all { variant ->
-        variant.dex.dependsOn << processWithJavassist //在执行dx命令之前将代码打入到class中
+    productFlavors {
+        qihoo {
+        }
     }
 }
-
 
 
 dependencies {
@@ -42,3 +39,5 @@ dependencies {
     compile 'com.android.support:design:23.1.0'
     compile project(':hotfixlib')
 }
+
+apply plugin: dodola.patch.HotFixPlugin

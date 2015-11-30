@@ -3,9 +3,12 @@
  */
 package dodola.hotfix;
 
+import dodola.hotfixlib.annotation.Patch;
+
 /**
  * Created by sunpengfei on 15/11/4.
  */
+@Patch(included = true)
 public class LoadBugClass {
     public String getBugString() {
         BugClass bugClass = new BugClass();
